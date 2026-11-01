@@ -2,7 +2,7 @@
 
 Uma aplicação editorial responsiva para criar e acompanhar artigos usando **JavaScript**, **Fetch API** e uma API REST local com **JSON Server**.
 
-> **Versão:** 1.1.0
+> **Versão:** 1.1.1
 
 ## Funcionalidades
 
