@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Escreva, publique e acompanhe artigos usando requisições REST com JavaScript."
+    />
+    <title>PostScript | Publicação de artigos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/style.css" />
+    <script src="./src/index.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="PostScript, início">
+        <span class="brand-mark material-symbols-outlined" aria-hidden="true">edit_note</span>
+        <span class="brand-copy">
+          <strong>PostScript</strong>
+          <span>EDITORIAL</span>
+        </span>
+      </a>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a class="nav-link nav-link-active" href="#editor">Escrever &amp; publicar</a>
+        <a class="nav-link" href="#published">Artigos publicados</a>
+      </nav>
+      <div class="header-status" id="connection-status" role="status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="connection-label">Conectando à API...</span>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="intro-panel" aria-labelledby="page-title">
+        <div class="intro-copy">
+          <div class="intro-icon material-symbols-outlined" aria-hidden="true">terminal</div>
+          <div>
+            <div class="title-row">
+              <h1 id="page-title">Console Editorial REST</h1>
+              <span class="eyebrow">POST HANDLER</span>
+            </div>
+            <p>Crie artigos e acompanhe cada publicação conectada à API.</p>
+          </div>
+        </div>
+        <div class="endpoint-card">
+          <span class="material-symbols-outlined" aria-hidden="true">cloud_sync</span>
+          <span class="endpoint-copy">
+            <span class="meta-label">Endpoint</span>
+            <strong>localhost:3001/articles</strong>
+          </span>
+          <span class="method-pill">REST</span>
+        </div>
+      </section>
+
+      <div class="workspace-grid">
+        <section class="editor-column" id="editor" aria-labelledby="editor-title">
+          <div class="panel editor-panel">
+            <div class="panel-heading">
+              <div>
+                <div class="heading-line">
+                  <h2 id="editor-title">Escrever artigo</h2>
+                  <span class="post-pill">POST / payload</span>
+                </div>
+                <p>Preencha os campos para publicar um novo artigo.</p>
+              </div>
+              <button class="button button-muted button-compact" id="btn-fill-mock" type="button">
+                <span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span>
+                <span>Exemplo</span>
+              </button>
+            </div>
+
+            <form id="article-form">
+              <div class="field-group">
+                <div class="field-heading">
+                  <label for="title">Título do artigo <span class="required-mark">*</span></label>
+                  <span class="field-counter" id="title-counter">0 / 120</span>
+                </div>
+                <div class="input-wrap">
+                  <span class="material-symbols-outlined input-icon" aria-hidden="true">title</span>
+                  <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    maxlength="120"
+                    placeholder="Ex.: Dominando requisições POST com Fetch"
+                    required
+                  />
+                </div>
+              </div>
+
+              <fieldset class="field-group tag-field">
+                <legend>Categoria principal</legend>
+                <div class="tag-list" id="tag-selector">
+                  <button class="tag-pill is-selected" data-tag="JavaScript" type="button" aria-pressed="true">JavaScript</button>
+                  <button class="tag-pill" data-tag="Frontend" type="button" aria-pressed="false">Frontend</button>
+                  <button class="tag-pill" data-tag="Web Dev" type="button" aria-pressed="false">Web Dev</button>
+                  <button class="tag-pill" data-tag="REST API" type="button" aria-pressed="false">REST API</button>
+                  <button class="tag-pill" data-tag="Arquitetura" type="button" aria-pressed="false">Arquitetura</button>
+                </div>
+                <input id="selected-tag" name="tag" type="hidden" value="JavaScript" />
+              </fieldset>
+
+              <div class="field-group">
+                <div class="field-heading">
+                  <label for="content">Conteúdo <span class="required-mark">*</span></label>
+                  <div class="content-tools">
+                    <button class="text-button" id="preview-toggle-btn" type="button" aria-pressed="false">
+                      <span class="material-symbols-outlined" aria-hidden="true">visibility</span>
+                      <span>Pré-visualizar</span>
+                    </button>
+                    <span class="field-counter" id="content-counter">0 palavras</span>
+                  </div>
+                </div>
+                <div class="editor-toolbar" aria-label="Formatação do conteúdo">
+                  <button class="format-btn" data-format="bold" title="Negrito" aria-label="Negrito" type="button"><span class="material-symbols-outlined" aria-hidden="true">format_bold</span></button>
+                  <button class="format-btn" data-format="italic" title="Itálico" aria-label="Itálico" type="button"><span class="material-symbols-outlined" aria-hidden="true">format_italic</span></button>
+                  <button class="format-btn" data-format="code" title="Código" aria-label="Código" type="button"><span class="material-symbols-outlined" aria-hidden="true">code</span></button>
+                  <button class="format-btn" data-format="quote" title="Citação" aria-label="Citação" type="button"><span class="material-symbols-outlined" aria-hidden="true">format_quote</span></button>
+                  <button class="format-btn" data-format="list" title="Lista" aria-label="Lista" type="button"><span class="material-symbols-outlined" aria-hidden="true">format_list_bulleted</span></button>
+                </div>
+                <textarea
+                  id="content"
+                  name="content"
+                  rows="8"
+                  placeholder="Escreva o conteúdo do seu artigo..."
+                  required
+                ></textarea>
+                <div class="content-preview is-hidden" id="content-preview-pane" aria-live="polite"></div>
+              </div>
+
+              <div class="form-row">
+                <div class="field-group">
+                  <label for="author">Autor <span class="required-mark">*</span></label>
+                  <div class="input-wrap">
+                    <span class="material-symbols-outlined input-icon" aria-hidden="true">account_circle</span>
+                    <input id="author" name="author" type="text" placeholder="Seu nome" required />
+                  </div>
+                </div>
+                <div class="field-group">
+                  <label for="date">Data de publicação <span class="required-mark">*</span></label>
+                  <div class="input-wrap">
+                    <span class="material-symbols-outlined input-icon" aria-hidden="true">calendar_today</span>
+                    <input id="date" name="date" type="date" required />
+                  </div>
+                </div>
+              </div>
+
+              <section class="payload-panel" aria-label="Prévia do payload JSON">
+                <button class="payload-toggle" id="toggle-payload" type="button" aria-expanded="true">
+                  <span class="payload-title">
+                    <span class="material-symbols-outlined" aria-hidden="true">data_object</span>
+                    Payload JSON
+                  </span>
+                  <span class="payload-type">application/json <span class="material-symbols-outlined" id="payload-chevron" aria-hidden="true">expand_more</span></span>
+                </button>
+                <pre class="payload-code" id="payload-viewer"><code id="payload-code"></code></pre>
+              </section>
+
+              <div class="submit-area">
+                <button class="button button-primary submit-button" id="submit-btn" type="submit">
+                  <span class="material-symbols-outlined" id="submit-icon" aria-hidden="true">send</span>
+                  <span id="submit-text">Publicar artigo</span>
+                  <span class="spinner is-hidden" id="submit-spinner" aria-hidden="true"></span>
+                </button>
+                <div class="form-footnote">
+                  <span><span class="status-dot status-dot-small" aria-hidden="true"></span> Requisição assíncrona via fetch()</span>
+                  <span>Content-Type: JSON</span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section class="feed-column" id="published" aria-labelledby="published-title">
+          <div class="panel feed-toolbar">
+            <div class="feed-title-row">
+              <h2 id="published-title">Artigos publicados</h2>
+              <span class="article-count" id="articles-badge">0 artigos</span>
+            </div>
+            <div class="feed-controls">
+              <label class="search-wrap" for="search-filter">
+                <span class="material-symbols-outlined" aria-hidden="true">search</span>
+                <input id="search-filter" type="search" placeholder="Buscar artigos..." />
+              </label>
+              <label class="select-wrap" for="sort-select">
+                <span class="visually-hidden">Ordenar artigos</span>
+                <select id="sort-select">
+                  <option value="newest">Mais recentes</option>
+                  <option value="oldest">Mais antigos</option>
+                </select>
+                <span class="material-symbols-outlined" aria-hidden="true">sort</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="article-list" id="articles" aria-live="polite"></div>
+          <div class="empty-state" id="empty-state">
+            <span class="empty-icon material-symbols-outlined" aria-hidden="true">article</span>
+            <h3>Nenhum artigo encontrado</h3>
+            <p>Publique um artigo ou ajuste sua busca para ver resultados.</p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+    <footer class="site-footer">
+      <span><span class="material-symbols-outlined" aria-hidden="true">terminal</span> PostScript Editorial</span>
+      <span>Publicação de artigos • API REST local</span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "articles": [
+    {
+      "id": "1",
+      "title": "Understanding JavaScript Closures",
+      "content": "A closure is the combination of a function and the lexical environment within which that function was declared. Closures are useful because they let you associate data (the lexical environment) with a function that operates on that data.",
+      "author": "Jane Doe",
+      "date": "2024-01-15"
+    },
+    {
+      "id": "2",
+      "title": "A Guide to Responsive Web Design",
+      "content": "Responsive web design is an approach to web design that makes web pages render well on a variety of devices and window or screen sizes. It ensures that users have a good viewing experience regardless of the device they are using.",
+      "author": "John Smith",
+      "date": "2024-02-10"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
